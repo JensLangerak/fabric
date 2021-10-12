@@ -21,7 +21,7 @@ public class HelloApplication extends Application {
 
 
         //TODO move to better place
-        Fabric fabric = new Fabric(200,200, new Vec2d(50,50), 2);
+        Fabric fabric = new Fabric(30,30, new Vec2d(100,100), 5);
         controller.SetFabric(fabric);
         controller.Draw();
         Timer timer = new Timer();

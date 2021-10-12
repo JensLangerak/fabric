@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 
 public class HelloController {
@@ -23,6 +24,48 @@ public class HelloController {
         gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.BLUE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        canvas.setOnMousePressed((MouseEvent event) -> {
+            HandleMouseClicked(event);
+        });
+        canvas.setOnMouseReleased((MouseEvent event) -> {
+            if (selectedPoint != null)
+                selectedPoint.unmovable = false;
+            selectedPoint = null;
+        });
+        canvas.setOnMouseDragged((MouseEvent event) -> {
+            HandleMouseMoved(event);
+        });
+    }
+
+    private void HandleMouseMoved(MouseEvent event) {
+        if (selectedPoint != null) {
+            double x = event.getX();
+            double y = event.getY();
+            selectedPoint.position.x = x;
+            selectedPoint.position.y = y;
+        }
+    }
+
+    private Point selectedPoint;
+    private void HandleMouseClicked(MouseEvent event) {
+        double x = event.getX();
+        double y = event.getY();
+        Point closesPoint = null;
+        double smallestDistance = -1;
+        for (Point p : this.fabric.points) {
+            if (p.unmovable)
+                continue;
+            double dist = p.position.subtract(new Vec2d(x,y)).lenght();
+            if (dist < 100) {
+                if (closesPoint == null || dist < smallestDistance) {
+                    closesPoint = p;
+                    smallestDistance = dist;
+                }
+            }
+        }
+        selectedPoint = closesPoint;
+        if (selectedPoint != null)
+            selectedPoint.unmovable = true;
     }
 
     public void SetFabric(Fabric fabric) {
@@ -45,6 +88,8 @@ public class HelloController {
         for (Point p : fabric.points) {
             if (p.unmovable)
                 gc.setFill(Color.RED);
+            else if (p == selectedPoint)
+                gc.setFill(Color.ORANGE);
             else
                 gc.setFill(Color.GREEN);
             gc.fillOval(p.position.x - rad, p.position.y - rad, rad, rad);

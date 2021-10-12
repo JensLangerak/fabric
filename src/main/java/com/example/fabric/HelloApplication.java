@@ -28,7 +28,7 @@ public class HelloApplication extends Application {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                for (int i = 0; i < 20
+                for (int i = 0; i < 50
                 ; i++)
                 fabric.update(1f/100f);
                 controller.Draw();

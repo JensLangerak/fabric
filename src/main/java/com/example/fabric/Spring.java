@@ -25,6 +25,9 @@ public class Spring implements IForce {
         Vec2d diff = p1.position.subtract(p2.position);
         double length = currentLength();
         double force = (length - defaultLength) * stiffness ; //positive to the other point, negative away from point
+        double maxForce = 50;
+        force = Math.min(force, maxForce);
+        force = Math.max(force, -maxForce );
         Vec2d vec;
         if (p.equals(p1)) {
             vec = new Vec2d(diff, -force);

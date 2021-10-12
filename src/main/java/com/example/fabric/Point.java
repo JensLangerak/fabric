@@ -9,7 +9,7 @@ public class Point {
     protected Vec2d acceleration = new Vec2d(0,0);
     protected double mass;
     protected boolean unmovable;
-    protected double drag = 0.05;
+    protected double drag = 0.25;
     protected ArrayList<IForce> forces = new ArrayList<>();
 
     public Point(Vec2d position, double mass) {

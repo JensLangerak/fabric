@@ -1,5 +1,6 @@
 package com.example.fabric;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -73,6 +74,9 @@ public class HelloController {
     }
 
     public void Draw() {
+        if (!Platform.isFxApplicationThread()) {
+            return;
+        }
         gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
         gc.setFill(Color.BLUE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());

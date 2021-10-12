@@ -1,9 +1,15 @@
 package com.example.fabric;
 
+import javafx.animation.AnimationTimer;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.Timer;
@@ -21,19 +27,21 @@ public class HelloApplication extends Application {
 
 
         //TODO move to better place
-        Fabric fabric = new Fabric(30,30, new Vec2d(100,100), 5);
+        Fabric fabric = new Fabric(50,50, new Vec2d(100,100), 5);
         controller.SetFabric(fabric);
         controller.Draw();
-        Timer timer = new Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                for (int i = 0; i < 50
-                ; i++)
-                fabric.update(1f/100f);
-                controller.Draw();
-            }
-        }, 0, 1000/30);
+        Timeline mainLoop = new Timeline(
+                new KeyFrame(Duration.millis(1000/30f),
+                        event -> {
+                            for (int i = 0; i < 50; i++)
+                                fabric.update(1f/100f);
+                            controller.Draw();
+                        }));
+        mainLoop.setCycleCount(Timeline.INDEFINITE);
+        mainLoop.play();
+
+
+
     }
 
     public static void main(String[] args) {
